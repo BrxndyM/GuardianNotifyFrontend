@@ -1,77 +1,71 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
-
-import { ExternalLink } from './ExternalLink';
-import { MonoText } from './StyledText';
+import { StyleSheet, TouchableOpacity, Image, Alert } from 'react-native';
 import { Text, View } from './Themed';
-
 import Colors from '@/constants/Colors';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '@/app/Navigation/AppNavigator';
 
-export default function EditScreenInfo({ path }: { path: string }) {
+type WelcomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Welcome'>;
+
+type Props = {
+  navigation: WelcomeScreenNavigationProp;
+};
+
+export default function WelcomeScreen({ navigation }: Props) {
+  const handleNavigation = (screen: 'Register' | 'Login') => {
+    navigation.navigate(screen);
+  };
+
   return (
-    <View>
-      <View style={styles.getStartedContainer}>
-        <Text
-          style={styles.getStartedText}
-          lightColor="rgba(0,0,0,0.8)"
-          darkColor="rgba(255,255,255,0.8)">
-          Open up the code for this screen:
-        </Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>Welcome to Guardian Notify</Text>
+      
+      <Image
+        source={require('../assets/images/soundimage.jpg')}
+        style={styles.logo}
+        resizeMode="contain"
+      />
+      
+      <TouchableOpacity style={styles.button} onPress={() => handleNavigation('Register')}>
+        <Text style={styles.buttonText}>Register</Text>
+      </TouchableOpacity>
 
-        <View
-          style={[styles.codeHighlightContainer, styles.homeScreenFilename]}
-          darkColor="rgba(255,255,255,0.05)"
-          lightColor="rgba(0,0,0,0.05)">
-          <MonoText>{path}</MonoText>
-        </View>
-
-        <Text
-          style={styles.getStartedText}
-          lightColor="rgba(0,0,0,0.8)"
-          darkColor="rgba(255,255,255,0.8)">
-          Change any of the text, save the file, and your app will automatically update.
-        </Text>
-      </View>
-
-      <View style={styles.helpContainer}>
-        <ExternalLink
-          style={styles.helpLink}
-          href="https://docs.expo.io/get-started/create-a-new-app/#opening-the-app-on-your-phonetablet">
-          <Text style={styles.helpLinkText} lightColor={Colors.light.tint}>
-            Tap here if your app doesn't automatically update after making changes
-          </Text>
-        </ExternalLink>
-      </View>
+      <TouchableOpacity style={styles.button} onPress={() => handleNavigation('Login')}>
+        <Text style={styles.buttonText}>Login</Text>
+      </TouchableOpacity>
     </View>
   );
+
 }
 
 const styles = StyleSheet.create({
-  getStartedContainer: {
+  container: {
+    flex: 1,
     alignItems: 'center',
-    marginHorizontal: 50,
+    justifyContent: 'center',
+    padding: 20,
   },
-  homeScreenFilename: {
-    marginVertical: 7,
-  },
-  codeHighlightContainer: {
-    borderRadius: 3,
-    paddingHorizontal: 4,
-  },
-  getStartedText: {
-    fontSize: 17,
-    lineHeight: 24,
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
     textAlign: 'center',
   },
-  helpContainer: {
-    marginTop: 15,
-    marginHorizontal: 20,
-    alignItems: 'center',
+  logo: {
+    width: 200,
+    height: 200,
+    marginBottom: 30,
   },
-  helpLink: {
-    paddingVertical: 15,
+  button: {
+    backgroundColor: Colors.light.tint,
+    paddingVertical: 12,
+    paddingHorizontal: 30,
+    borderRadius: 5,
+    marginVertical: 10,
   },
-  helpLinkText: {
-    textAlign: 'center',
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
